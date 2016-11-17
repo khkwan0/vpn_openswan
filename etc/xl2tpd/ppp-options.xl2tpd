@@ -1,0 +1,12 @@
+require-pap
+crtscts
+idle 1800
+mtu 1200
+mru 1200
+nodefaultroute
+debug
+lock
+proxyarp
+connect-delay 5000
+plugin radius.so
+plugin radattr.so
