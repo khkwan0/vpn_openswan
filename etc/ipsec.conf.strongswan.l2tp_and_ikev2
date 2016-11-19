@@ -1,0 +1,59 @@
+# ipsec.conf - strongSwan IPsec configuration file
+
+# basic configuration
+
+config setup
+    cachecrls=yes
+    uniqueids=yes
+
+# Add connections here.
+
+# Sample VPN connections
+
+#conn sample-self-signed
+#      leftsubnet=10.1.0.0/16
+#      leftcert=selfCert.der
+#      leftsendcert=never
+#      right=192.168.0.2
+#      rightsubnet=10.2.0.0/16
+#      rightcert=peerCert.der
+#      auto=start
+
+#conn sample-with-ca-cert
+#      leftsubnet=10.1.0.0/16
+#      leftcert=myCert.pem
+#      right=192.168.0.2
+#      rightsubnet=10.2.0.0/16
+#      rightid="C=CH, O=Linux strongSwan CN=peer name"
+#      auto=start
+#
+#    phase2alg=aes256-sha1,aes128-sha1,3des-sha1
+conn lt2p
+    authby=secret
+    left=104.239.158.134
+    right=%any
+    type=transport
+    auto=add
+    keyexchange=ikev1
+
+conn ikev2
+    keyexchange=ikev2
+    left=104.239.158.134
+    leftsubnet=0.0.0.0/0
+    leftid=caldrivers.com
+    leftauth=pubkey
+    right=%any
+    rightid=%any
+    auto=add
+    rightauth=eap-radius
+    eap_identity=%any
+    leftcert=cd_bundled.pem
+    dpdaction=clear
+    type=tunnel
+    leftsendcert=always
+    rightsourceip=192.0.2.0/25,2001:db8::/96
+    rekey=no
+    fragmentation=yes
+    ike=aes256-aes192-aes128-sha384-sha256-sha1-modp3072-modp2048-modp1536-modp1024! 
+    esp=aes256-aes192-aes128-sha384-sha256-sha1!
+    rightdns=8.8.8.8,8.8.4.4
